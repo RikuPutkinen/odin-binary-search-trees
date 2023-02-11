@@ -39,7 +39,29 @@ class Tree {
     }
   }
 
-  //delete(value)
+  delete(value, root=this.root) {
+    if (root === null) return null;
+
+    if (root.data < value) root.right = this.delete(value, root.right);
+    else if (root.data > value) root.left = this.delete(value, root.left);
+    else {
+      console.log('D', root)
+      if (root.left === null) return root.right;
+      if (root.right === null) return root.left;
+      root.data = this.findMax(root.left);
+      root.left = this.delete(root.data, root.left);
+    }
+
+    return root;
+  }
+
+  findMax(root=this.root) {
+    console.log('F', root);
+    while (root.right !== null) {
+      root = root.right;
+    }
+    return root.data;
+  }
 }
 
 function buildTree(arr) {
@@ -52,13 +74,13 @@ function sortAndRemoveDuplicates(arr) {
 }
 
 function build(arr, start=0, end=arr.length-1) {
-  console.log(arr);
+  //console.log(arr);
   
   if (start > end) return null;
   const middle = parseInt((start + end) / 2);
-  console.log('start:', start);
+  /*console.log('start:', start);
   console.log('end:', end);
-  console.log('middle:', middle);
+  console.log('middle:', middle);*/
   
 
   const newNode = new Node(arr[middle]);
@@ -87,4 +109,8 @@ prettyPrint(newTree.root);
 newTree.insert(876);
 newTree.insert(10);
 newTree.insert(8);
+prettyPrint(newTree.root);
+newTree.delete(876);
+newTree.delete(67);
+
 prettyPrint(newTree.root);
