@@ -45,7 +45,6 @@ class Tree {
     if (root.data < value) root.right = this.delete(value, root.right);
     else if (root.data > value) root.left = this.delete(value, root.left);
     else {
-      console.log('D', root)
       if (root.left === null) return root.right;
       if (root.right === null) return root.left;
       root.data = this.findMax(root.left);
@@ -56,12 +55,23 @@ class Tree {
   }
 
   findMax(root=this.root) {
-    console.log('F', root);
     while (root.right !== null) {
       root = root.right;
     }
     return root.data;
   }
+
+  find(value) {
+    let current = this.root || null;
+
+    while (current.data !== value && current !== null) {
+      if (current.data < value) current = current.right;
+      else if (current.data > value) current = current.left;
+    }
+
+    return current;
+  }
+
 }
 
 function buildTree(arr) {
@@ -74,14 +84,9 @@ function sortAndRemoveDuplicates(arr) {
 }
 
 function build(arr, start=0, end=arr.length-1) {
-  //console.log(arr);
   
   if (start > end) return null;
   const middle = parseInt((start + end) / 2);
-  /*console.log('start:', start);
-  console.log('end:', end);
-  console.log('middle:', middle);*/
-  
 
   const newNode = new Node(arr[middle]);
   newNode.left = build(arr, start, middle-1);
@@ -114,3 +119,4 @@ newTree.delete(876);
 newTree.delete(67);
 
 prettyPrint(newTree.root);
+console.log(newTree.find(8));
