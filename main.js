@@ -64,12 +64,34 @@ class Tree {
   find(value) {
     let current = this.root || null;
 
-    while (current.data !== value && current !== null) {
+    while (current !== null && current.data !== value) {
       if (current.data < value) current = current.right;
       else if (current.data > value) current = current.left;
     }
 
     return current;
+  }
+
+  levelOrder(cb=null) {
+    if (!this.root) return;
+
+    let queue = [];
+    let nodeArr = [];
+    queue.push(this.root);
+
+    while (queue.length > 0) {
+      let current = queue[0];
+      nodeArr.push(current);
+
+      if (current.left) queue.push(current.left);
+      if (current.right) queue.push(current.right);
+
+      queue.shift();
+    }
+
+    if(cb) return nodeArr.map(cb);
+    else return nodeArr.map(node => node.data);
+
   }
 
 }
@@ -119,4 +141,4 @@ newTree.delete(876);
 newTree.delete(67);
 
 prettyPrint(newTree.root);
-console.log(newTree.find(8));
+console.log(newTree.find(444));
