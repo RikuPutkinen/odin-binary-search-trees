@@ -117,8 +117,53 @@ class Tree {
     if (!cb) return nodeArr.map(node => node.data);
   }
 
-  //preorder(cb)
-  //postorder(cb)
+  preorder(cb) {
+    if (!this.root) return;
+    let stack = [];
+    let nodeArr = [];
+
+    let current = this.root;
+
+    while (stack.length > 0 || current) {
+      if (current) {
+        stack.push(current);
+        if (!cb) nodeArr.push(current);
+        else cb(current);
+        current = current.left;
+      }
+      else {
+        current = stack.pop();
+        current = current.right;
+      }
+    }
+
+    if (!cb) return nodeArr.map(node => node.data);
+  }
+
+  postorder(cb) {
+    if (!this.root) return;
+    let traversalStack = [];
+    let nodeStack = [];
+    let nodeArr = [];
+
+    traversalStack.push(this.root);
+
+    while (traversalStack.length > 0) {
+      let current = traversalStack.pop();
+      nodeStack.push(current);
+
+      if (current.left) traversalStack.push(current.left);
+      if (current.right) traversalStack.push(current.right);
+    }
+
+    while (nodeStack.length > 0) {
+      let current = nodeStack.pop();
+      if (cb) cb(current);
+      else nodeArr.push(current);
+    }
+
+    if (!cb) return nodeArr.map(node => node.data);
+  }
 
 }
 
@@ -169,5 +214,5 @@ newTree.delete(67);
 prettyPrint(newTree.root);
 //console.log(newTree.find(444));
 
-newTree.inorder(node => console.log(node.data * 2));
-console.log(newTree.inorder());
+newTree.postorder(node => console.log(node.data * 2));
+console.log(newTree.postorder());
