@@ -82,6 +82,7 @@ class Tree {
     while (queue.length > 0) {
       let current = queue[0];
       nodeArr.push(current);
+      if (cb) cb(current);
 
       if (current.left) queue.push(current.left);
       if (current.right) queue.push(current.right);
@@ -89,10 +90,13 @@ class Tree {
       queue.shift();
     }
 
-    if(cb) return nodeArr.map(cb);
-    else return nodeArr.map(node => node.data);
+    if (!cb) return nodeArr.map(node => node.data);
 
   }
+
+  //inorder(cb)
+  //preorder(cb)
+  //postorder(cb)
 
 }
 
@@ -141,4 +145,7 @@ newTree.delete(876);
 newTree.delete(67);
 
 prettyPrint(newTree.root);
-console.log(newTree.find(444));
+//console.log(newTree.find(444));
+
+newTree.levelOrder(node => console.log(node.data * 2));
+console.log(newTree.levelOrder());
