@@ -91,10 +91,32 @@ class Tree {
     }
 
     if (!cb) return nodeArr.map(node => node.data);
-
   }
 
-  //inorder(cb)
+  inorder(cb=null) {
+    if (!this.root) return;
+    let stack = [];
+    let nodeArr = [];
+
+    let current = this.root;
+
+    while (stack.length > 0 || current) {
+      if (current) {
+        stack.push(current);
+        current = current.left;
+      }
+      else {
+        current = stack.pop();
+        if (!cb) nodeArr.push(current);
+        else cb(current);
+        
+        current = current.right;
+      }
+    }
+
+    if (!cb) return nodeArr.map(node => node.data);
+  }
+
   //preorder(cb)
   //postorder(cb)
 
@@ -147,5 +169,5 @@ newTree.delete(67);
 prettyPrint(newTree.root);
 //console.log(newTree.find(444));
 
-newTree.levelOrder(node => console.log(node.data * 2));
-console.log(newTree.levelOrder());
+newTree.inorder(node => console.log(node.data * 2));
+console.log(newTree.inorder());
