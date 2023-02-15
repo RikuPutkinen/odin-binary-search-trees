@@ -174,6 +174,22 @@ class Tree {
     ) + 1;
   }
 
+  depth(node=this.root) {
+    if (!node) return;
+
+    let depth = 0;
+    let current = this.root; 
+
+    while (current !== node && current) {
+      if (current.data > node.data) current = current.left;
+      else current = current.right;
+      console.log(current);
+      depth++;
+    }
+    if (current === node) return depth;
+    else return;
+  }
+
 }
 
 function buildTree(arr) {
@@ -225,4 +241,4 @@ prettyPrint(newTree.root);
 
 newTree.postorder(node => console.log(node.data * 2));
 console.log(newTree.postorder());
-console.log(newTree.height(newTree.root.left));
+console.log(newTree.depth(newTree.root.left.right.right));
