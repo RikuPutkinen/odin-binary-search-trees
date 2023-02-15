@@ -117,7 +117,7 @@ class Tree {
     if (!cb) return nodeArr.map(node => node.data);
   }
 
-  preorder(cb) {
+  preorder(cb=null) {
     if (!this.root) return;
     let stack = [];
     let nodeArr = [];
@@ -140,7 +140,7 @@ class Tree {
     if (!cb) return nodeArr.map(node => node.data);
   }
 
-  postorder(cb) {
+  postorder(cb=null) {
     if (!this.root) return;
     let traversalStack = [];
     let nodeStack = [];
@@ -183,11 +183,25 @@ class Tree {
     while (current !== node && current) {
       if (current.data > node.data) current = current.left;
       else current = current.right;
-      console.log(current);
       depth++;
     }
     if (current === node) return depth;
     else return;
+  }
+
+  isBalanced(node=this.root) {
+    if (!node) return true;
+
+    let heightLeft = this.height(node.left);
+    let heightRight = this.height(node.right);
+
+    return Math.abs(heightLeft - heightRight) <= 1
+      && this.isBalanced(node.left)
+      && this.isBalanced(node.right);
+  }
+
+  rebalance() {
+    this.root = buildTree(this.inorder());
   }
 
 }
@@ -225,20 +239,36 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 }
 
 
-const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+
+function randArray(max, len) {
+  const arr = [];
+  for (let i = 0; i < len; i++) {
+    arr.push(randInt(0, max));
+  }
+
+  return arr;
+}
+
+function randInt(min, max) {
+  return min + Math.round(Math.random() * (max - min))
+}
+
+const arr = randArray(50, 20);
 const newTree = new Tree(arr);
-prettyPrint(newTree.root);
-
-newTree.insert(876);
-newTree.insert(10);
-newTree.insert(8);
-prettyPrint(newTree.root);
-newTree.delete(876);
-newTree.delete(67);
-
-prettyPrint(newTree.root);
-//console.log(newTree.find(444));
-
-newTree.postorder(node => console.log(node.data * 2));
+console.log(newTree.isBalanced());
+console.log(newTree.levelOrder());
+console.log(newTree.preorder());
 console.log(newTree.postorder());
-console.log(newTree.depth(newTree.root.left.right.right));
+console.log(newTree.inorder());
+
+for (let i = 0; i < 10; i++) {
+  newTree.insert(randInt(100, 200))
+}
+
+console.log(newTree.isBalanced());
+newTree.rebalance();
+console.log(newTree.isBalanced());
+console.log(newTree.levelOrder());
+console.log(newTree.preorder());
+console.log(newTree.postorder());
+console.log(newTree.inorder());
