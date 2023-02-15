@@ -165,6 +165,15 @@ class Tree {
     if (!cb) return nodeArr.map(node => node.data);
   }
 
+  height(node=this.root) {
+    if (!node) return -1;
+
+    return Math.max(
+      this.height(node.left),
+      this.height(node.right)
+    ) + 1;
+  }
+
 }
 
 function buildTree(arr) {
@@ -216,3 +225,4 @@ prettyPrint(newTree.root);
 
 newTree.postorder(node => console.log(node.data * 2));
 console.log(newTree.postorder());
+console.log(newTree.height(newTree.root.left));
